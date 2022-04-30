@@ -5,8 +5,8 @@ import { Card, CardBody, Col } from "reactstrap";
 const ServiceItem = ({ serviceObj }) => {
 
   const reduceLength = (str) => {
-    if (str.length > 300) {
-      return str.substring(0, 300) + '...';
+    if (str.length > 200) {
+      return str.substring(0, 200) + '...';
     } else {
       return str;
     }
