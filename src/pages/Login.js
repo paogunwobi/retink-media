@@ -44,14 +44,12 @@ const Login = () => {
         type: "popup",
       })
       .then((userData) => {
-        console.log('Login Google User Data: ', userData);
         setSuccess(true);
         setTimeout(() => {
           setSuccess(false);
           history.push('/');
         }, 5000);
       }).catch((err) => {
-        console.log("Login User with Google Err: ", err);
         setErrMsg(err.message);
         setFailed(true);
         setTimeout(() => {
@@ -65,14 +63,12 @@ const Login = () => {
       email,
       password
     }).then((userData) => {
-      console.log('Login User Data: ', userData);
       setSuccess(true);
       setTimeout(() => {
         setSuccess(false);
         history.push('/');
       }, 5000);
     }).catch((err) => {
-      console.log("Login User Err: ", err);
       setErrMsg(err.message);
       setFailed(true);
       setTimeout(() => {
@@ -116,9 +112,7 @@ const Login = () => {
       setErrors(newErrors)
     } else {
       const { email, password } = form;
-      console.log('Form object: ', form);
       signInWithEmail(email, password);
-      console.log("Submitted")
     }
   }
 

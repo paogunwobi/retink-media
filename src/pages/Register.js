@@ -33,14 +33,12 @@ const Register = () => {
       { email, password },
       { username, email }
     ).then((userData) => {
-      console.log('User Data: ', userData);
       setSuccess(true);
       setTimeout(() => {
         setSuccess(false);
         history.push('/');
       }, 5000)
     }).catch((err) => {
-      console.log("Register Error: ", err)
       setErrMsg(err.message);
       setFailed(true);
       setTimeout(() => {
@@ -56,14 +54,12 @@ const Register = () => {
         type: "popup",
       })
       .then(() => {
-        console.log('Login Google User Data: ', userData);
         setSuccess(true);
         setTimeout(() => {
           setSuccess(false);
           history.push('/');
         }, 5000);
       }).catch((err) => {
-        console.log("Login User with Google Err: ", err);
         setErrMsg(err.message);
         setFailed(true);
         setTimeout(() => {
@@ -96,7 +92,6 @@ const Register = () => {
       // No errors! Put any logic here for the form submission!
       // alert('Thank you for your feedback!')
       createNewUser(form);
-      console.log("Submitted")
     }
   }
 
