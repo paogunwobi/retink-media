@@ -49,7 +49,7 @@ const rrfProps = {
 };
 
 ReactDOM.render(
-  <React.StrictMode>
+  <React.Fragment>
     <Provider store={store}>
       <ReactReduxFirebaseProvider {...rrfProps}>
         <AnimatePresence exitBeforeEnter>
@@ -63,7 +63,7 @@ ReactDOM.render(
         </AnimatePresence>
       </ReactReduxFirebaseProvider>
     </Provider>
-  </React.StrictMode>,
+  </React.Fragment>,
   document.getElementById("root")
 );
 

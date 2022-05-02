@@ -1,5 +1,5 @@
 // reactstrap components
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card, CardBody, Container, Row, Col, Form, FormGroup, InputGroup, Input, Button, UncontrolledCarousel, UncontrolledTooltip, Popover, PopoverBody } from "reactstrap";
 import AnimatedPage from "./AnimatedPage";
 import { useFirestoreConnect } from "react-redux-firebase";
@@ -22,34 +22,28 @@ const items = [
   }
 ];
 
-const servicePlaceH = [
-  {
-    title: "Digital Marketing",
-    description: "Gone are the days when you have to market your offers by going from person to person physically. We can now help you reach millions, but much more we can help you convert prospects in larger quantities with our tried and tested strategies.  For example, if you want better brand visibility and awareness on search engines, we have all the tools and strategies to rank you number 1 on Google and any other search engine of your choice. If you’d like to maximize social media, we have cutting-edge strategies to dominate any social media of your choice. In email marketing, we have a knack for making your subscribers your loudest cheerleaders because of our intellectually intriguing and emotionally compelling way of messaging. Whatever you want, wherever you want it? So far it’s digital marketing, you can trust us.  Join us here to give your content and solution the massive publicity it deserves.",
-    icon: "fas fa-search",
-  },
-  {
-    title: "Branding",
-    description: "Your prospects won’t become users or repeat customers if your website, applications, or digital designs have a poor interface. But beyond looking good, it must subconsciously educate them on your values and stand as a brand. This is why we maximize colors, fonts, layouts, and other design jargon to communicate relevant emotions to your audience online.  If you want your business to stand out from the rest. We’ve got the tools and strategies to help you build a brand image and experience your customers will remember. ",
-    icon: "ni ni-settings-gear-65",
-  },
-  {
-    title: "Digital Consultancy",
-    description: "Every progressive and successful business in the 21st century is using the digital advantage with digital solutions that include marketing and technical deliverables to enhance business growth, performance, and revenue.  Let’s analyse your business, give you a marketing audit and IT counseling for your digital strategy development.  Maximize ROI on your digital campaigns with our insights, tech experience, and creativity.  We want to work with your business to tell your story, so you can sell more and multiply your income. Join us here to establish your 10X roadmap.",
-    icon: "ni ni-support-16",
-  }
-];
-
-const Home = (props) => {
+const Home = () => {
+  const [servicesArr, setServicesArr] = useState([]);
 
   useFirestoreConnect({
     collection: `services`,
+    storeAs: "services",
   });
-  
-  const services = useSelector(state => state.firebase.data.services);
+
+  const services = useSelector((state) => state.firestore.data.services);
+  const getDataArr = (data) => {
+    let servicesData = [];
+    if (data) {
+      Object.keys(data).forEach(e => {
+        servicesData.push({...data[e], id: e});
+      })
+    }
+    return servicesData;
+  }
 
   useEffect(() => {
-    console.log('Services: ', services);
+    const data = getDataArr(services);
+    setServicesArr([...data]);
   }, [services]);
   
   return (
@@ -191,8 +185,8 @@ const Home = (props) => {
             </Row>
           </Container>
         </section>
-        <Container className="p-5" fluid>
-          <>
+        {servicesArr.length > 0 && <>
+          <Container className="p-5 mb-5" fluid>
             <Row className="text-center">
               <Col>
                 <h1 className="mt-5">SERVICES</h1>
@@ -202,14 +196,14 @@ const Home = (props) => {
               </Col>
             </Row>
             <Row className="text-center my-auto mx-auto">
-              {servicePlaceH.map((item) => {
-                return <ServiceItem serviceObj={item}/>
+              {servicesArr.map((item) => {
+                return <ServiceItem serviceObj={item} key={item.id} />
               })}
             </Row>
-          </>
-        </Container>
+          </Container>
+        </>}
         <>
-          <section className="section section-shaped bg-gradient-retink mt-5 p-5">
+          <section className="section section-shaped bg-gradient-retink p-5">
             <Container className="py-md">
               <Row className="justify-content-between align-items-center">
                 <Col className="mb-5 mb-lg-0" lg="5">
@@ -268,7 +262,7 @@ const Home = (props) => {
                 </Col>
                 <Col className="mb-lg-auto" lg="6">
                   <div className="rounded shadow-lg overflow-hidden">
-                    <UncontrolledCarousel items={items} />
+                    <UncontrolledCarousel items={items} ref={useRef(null)} />
                   </div>
                 </Col>
               </Row>
